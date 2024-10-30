@@ -13,7 +13,13 @@ app.use(express.json());
 
 connectionDB();
 
-app.use('/api/employeeItems',require('./routes/itemRoutes'))
+app.use('/api/employeeItems',require('./routes/itemRoutes'));
+
+app.use('/api/users',require('./routes/userRoutes'));
+
+
+
+
 
 
 app.use(errorHandler);

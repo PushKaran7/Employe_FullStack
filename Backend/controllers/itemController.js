@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 
 
 const getAllItems = asyncHandler(async (req, res) => {
-    const employee = await Employee.find();
+    const employee = await Employee.find({user_id:req.user.id});
     res.json(employee);
 });
 
@@ -28,7 +28,8 @@ const createItem = asyncHandler(async (req, res) => {
         education,
         company,
         experience,
-        package
+        package,
+        user_id:req.user.id
 
     });
     res.json(employee);
@@ -43,6 +44,11 @@ const updateEmp=asyncHandler(async (req,res)=>{
         throw new Error("Employee not found");
 
     }
+    console.log("this is what the user_id -->",employee.user_id);
+    if(employee.user_id.toString()!==req.user.id){
+        res.status(401);
+        throw new Error("User doesnot have permission");
+    }
     const updateval = await Employee.findOneAndUpdate(
         { emp_id: req.params.emp_id },
         req.body,
@@ -53,7 +59,13 @@ const updateEmp=asyncHandler(async (req,res)=>{
 });
 
 const deleteEmp=asyncHandler(async(req,res)=>{
-    const employee=await Employee.findOneAndDelete({ emp_id: req.params.emp_id });
+
+    const employee=await Employee.findOne({ emp_id: req.params.emp_id });
+    if(employee.user_id.toString()!==req.user.id){
+        res.status(401);
+        throw new Error("User doesnot have permission");
+    }
+    await Employee.findOneAndDelete({ emp_id: req.params.emp_id });
     if (!employee) {
         res.status(404);
         throw new Error("Employee not found");
