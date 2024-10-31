@@ -1,0 +1,25 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.tool-val {
+    background-color: rgb(200, 186, 232);
+    color: white;
+}
+
+.main-body {
+
+    padding-top: 20px;
+    margin: 0 auto;
+    max-width: 1248px;
+
+    mat-form-field {
+        width: 100%;
+    }
+
+}
+
+.action-value {
+    display: flex;
+    gap: 1px;
+}
